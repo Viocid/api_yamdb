@@ -38,3 +38,19 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ('id', 'text', 'author', 'pub_date')
         read_only_fields = ('author', )
+
+
+class TitleSerializer(serializers.ModelSerializer):
+    """Сериализатор для модели Title с расчетом рейтинга."""
+
+    rating = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Title
+        fields = ('id', 'name', 'year', 'description',
+                  'genre', 'category', 'rating')
+
+    def get_rating(self, title):
+        """Подсчет среднего рейтинга для произведения."""
+        avg_score = title.reviews.aggregate(Avg('score')).get('score__avg')
+        return avg_score or 0
