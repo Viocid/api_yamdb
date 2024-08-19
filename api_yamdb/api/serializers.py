@@ -1,3 +1,4 @@
+from django.db.models import Avg
 from django.utils import timezone
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -24,11 +25,17 @@ class TitleLRSerializer(serializers.ModelSerializer):
 
     category = CategorySerializer(read_only=True)
     genre = GenreSerializer(read_only=True, many=True)
+    rating = serializers.SerializerMethodField()
 
     class Meta:
         model = Title
-        fields = '__all__'
+        fields = ('id', 'name', 'year', 'description',
+                  'genre', 'category', 'rating')
 
+    def get_rating(self, title):
+        """Подсчет среднего рейтинга для произведения."""
+        avg_score = title.reviews.aggregate(Avg('score')).get('score__avg')
+        return avg_score or 0
 
     def validate_year(self, value):
         if value > timezone.now().year:

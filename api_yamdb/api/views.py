@@ -2,7 +2,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, mixins, viewsets
 
 from .permissions import IsAdminOrAnyReadOnly
-from reviews.models import(
+from reviews.models import (
     Category,
     Genre,
     Title
@@ -41,7 +41,7 @@ class TitleViewSet(viewsets.ModelViewSet):
     serializer_class = TitleCPDSerializer
     filter_backends = (DjangoFilterBackend,)
     http_method_names = ('get', 'post', 'patch', 'delete', 'head', 'options')
-    filterset_fields = ('category', 'genre', 'name', 'year') 
+    filterset_fields = ('category', 'genre', 'name', 'year')
     permission_classes = (IsAdminOrAnyReadOnly,)
 
     def get_serializer_class(self):

@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models import CheckConstraint, Q
 from django.utils import timezone
@@ -78,17 +77,12 @@ class Title(models.Model):
         through='GenreToTitle',
         verbose_name='Жанр'
     )
-    rating = models.IntegerField(
-        'Рейтинг',
-        default=None,
-        null=True
-    )
 
     class Meta:
         constraints = [
             CheckConstraint(
-                check = Q(year__lte=timezone.now().year), 
-                name = 'check_year',
+                check=Q(year__lte=timezone.now().year),
+                name='check_year',
             ),
         ]
         ordering = ('name',)
