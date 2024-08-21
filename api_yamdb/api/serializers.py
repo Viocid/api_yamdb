@@ -35,7 +35,7 @@ class TitleLRSerializer(serializers.ModelSerializer):
     def get_rating(self, title):
         """Подсчет среднего рейтинга для произведения."""
         avg_score = title.reviews.aggregate(Avg('score')).get('score__avg')
-        return avg_score or 0
+        return avg_score or None
 
     def validate_year(self, value):
         if value > timezone.now().year:

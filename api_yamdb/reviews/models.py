@@ -105,11 +105,13 @@ class GenreToTitle(models.Model):
         Title,
         on_delete=models.CASCADE,
         verbose_name='Произведение',
+        null=True
     )
     genre = models.ForeignKey(
         Genre,
         on_delete=models.CASCADE,
         verbose_name='Жанр',
+        null=True
     )
 
     class Meta:
@@ -128,10 +130,10 @@ def validate_score(value):
 class Review(models.Model):
     text = models.TextField()
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='reviews')
+        User, on_delete=models.CASCADE, related_name='reviews', null=True)
     score = models.IntegerField('Оценка', validators=[validate_score])
     title = models.ForeignKey(
-        Title, on_delete=models.CASCADE, related_name='reviews')
+        Title, on_delete=models.CASCADE, related_name='reviews', null=True)
     pub_date = models.DateTimeField(
         'Дата добавления', auto_now_add=True, db_index=True)
 
@@ -146,9 +148,9 @@ class Review(models.Model):
 class Comment(models.Model):
     text = models.TextField()
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='comments')
+        User, on_delete=models.CASCADE, related_name='comments', null=True)
     review = models.ForeignKey(
-        Review, on_delete=models.CASCADE, related_name='comments')
+        Review, on_delete=models.CASCADE, related_name='comments', null=True)
     pub_date = models.DateTimeField(
         'Дата добавления', auto_now_add=True, db_index=True)
 
