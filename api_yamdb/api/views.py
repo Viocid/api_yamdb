@@ -1,7 +1,8 @@
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, mixins, viewsets
-
+from rest_framework import filters, mixins, viewsets, status
+from django.shortcuts import get_object_or_404
+from rest_framework.response import Response
 from .permissions import IsAdminOrAnyReadOnly, IsAuthorOrReadOnly
 from reviews.models import (
     Category,
@@ -30,15 +31,29 @@ class GenreViewSet(CreateDestroyViewSet):
     serializer_class = GenreSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
+    lookup_field = 'slug'
     permission_classes = (IsAdminOrAnyReadOnly,)
+
+    def destroy(self, request, slug=None):
+        genre = get_object_or_404(Genre, slug=slug)
+        self.check_object_permissions(request, genre)
+        genre.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class CategoryViewSet(CreateDestroyViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = (IsAdminOrAnyReadOnly,)
+    lookup_field = 'slug'
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
-    permission_classes = (IsAdminOrAnyReadOnly,)
+
+    def destroy(self, request, slug=None):
+        category = get_object_or_404(Category, slug=slug)
+        self.check_object_permissions(request, category)
+        category.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class TitleViewSet(viewsets.ModelViewSet):
