@@ -1,11 +1,15 @@
 from django.db import models
 from django.db.models import CheckConstraint, Q
 from django.utils import timezone
-
+from django.core.exceptions import ValidationError
+from django.contrib.auth import get_user_model
 from .constants import (
     MAX_NAME_LENGTH,
     MAX_SLUG_LENGTH
 )
+
+
+User = get_user_model()
 
 
 class Category(models.Model):

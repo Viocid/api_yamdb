@@ -1,3 +1,4 @@
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, mixins, viewsets
 
@@ -6,7 +7,8 @@ from reviews.models import (
     Category,
     Genre,
     Title,
-    Review
+    Review,
+    Comment
 )
 from .serializers import (
     CategorySerializer,
@@ -66,10 +68,10 @@ class ReviewViewSet(viewsets.ModelViewSet):
         if self.action in ['list', 'retrieve']:
             permission_classes = [AllowAny]
         elif self.action == 'create':
-            permission_classes = [permissions.IsAuthenticated]
+            permission_classes = [IsAuthenticated]
         else:
             permission_classes = [
-                permissions.IsAuthenticated, IsAuthorOrReadOnly]
+                IsAuthenticated, IsAuthorOrReadOnly]
         return [permission() for permission in permission_classes]
 
 
@@ -89,10 +91,10 @@ class CommentViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         """Определяем права доступа в зависимости от действия."""
         if self.action in ['list', 'retrieve']:
-            permission_classes = [permissions.AllowAny]
+            permission_classes = [AllowAny]
         elif self.action == 'create':
-            permission_classes = [permissions.IsAuthenticated]
+            permission_classes = [IsAuthenticated]
         else:
             permission_classes = [
-                permissions.IsAuthenticated, IsAuthorOrReadOnly]
+                IsAuthenticated, IsAuthorOrReadOnly]
         return [permission() for permission in permission_classes]

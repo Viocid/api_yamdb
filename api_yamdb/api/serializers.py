@@ -9,7 +9,7 @@ from reviews.models import Category, Genre, Title, Comment, Review
 class GenreSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Genre,
+        model = Genre
         fields = ('name', 'slug')
 
 
