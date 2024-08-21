@@ -21,7 +21,7 @@ from .serializers import (
 
 
 class CreateDestroyViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin,
-                           viewsets.GenericViewSet):
+                           mixins.ListModelMixin, viewsets.GenericViewSet):
     pass
 
 
