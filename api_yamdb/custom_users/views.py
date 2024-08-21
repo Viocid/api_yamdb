@@ -25,7 +25,7 @@ User = get_user_model()
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserAdminSerializer
-    permission_classes = (IsAdmin,AllowAny)
+    permission_classes = (IsAdmin, AllowAny)
     pagination_class = PageNumberPagination
     lookup_field = "username"
     filter_backends = (filters.SearchFilter,)
