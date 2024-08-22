@@ -9,6 +9,7 @@ from .permissions import IsAdminOrAnyReadOnly, IsAuthorOrReadOnly
 from .serializers import (CategorySerializer, CommentSerializer,
                           GenreSerializer, ReviewSerializer,
                           TitleCPDSerializer, TitleLRSerializer)
+from api.filters import TitlesFilter
 
 
 class CreateDestroyViewSet(
@@ -55,7 +56,7 @@ class TitleViewSet(viewsets.ModelViewSet):
     serializer_class = TitleCPDSerializer
     filter_backends = (DjangoFilterBackend,)
     http_method_names = ("get", "post", "patch", "delete", "head", "options")
-    filterset_fields = ("category__slug", "genre__slug", "name", "year")
+    filterset_class = TitlesFilter
     permission_classes = (IsAdminOrAnyReadOnly,)
 
     def get_serializer_class(self):
