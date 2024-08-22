@@ -11,9 +11,13 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from api_yamdb.settings import ADMIN_EMAIL
 
-from .permissions import IsAdmin
-from .serializers import (AuthSerializer, GetTokenSerializer,
-                          UserAdminSerializer, UserSerializer)
+from custom_users.permissions import IsAdmin
+from custom_users.serializers import (
+    AuthSerializer,
+    GetTokenSerializer,
+    UserAdminSerializer,
+    UserSerializer,
+)
 
 User = get_user_model()
 

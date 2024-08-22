@@ -5,10 +5,15 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from reviews.models import Category, Comment, Genre, Review, Title
 
-from .permissions import IsAdminOrAnyReadOnly, IsAuthorOrReadOnly
-from .serializers import (CategorySerializer, CommentSerializer,
-                          GenreSerializer, ReviewSerializer,
-                          TitleCPDSerializer, TitleLRSerializer)
+from api.permissions import IsAdminOrAnyReadOnly, IsAuthorOrReadOnly
+from api.serializers import (
+    CategorySerializer,
+    CommentSerializer,
+    GenreSerializer,
+    ReviewSerializer,
+    TitleCPDSerializer,
+    TitleLRSerializer,
+)
 from api.filters import TitlesFilter
 
 
