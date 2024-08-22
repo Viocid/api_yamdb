@@ -12,12 +12,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from api_yamdb.settings import ADMIN_EMAIL
 
 from .permissions import IsAdmin
-from .serializers import (
-    AuthSerializer,
-    GetTokenSerializer,
-    UserAdminSerializer,
-    UserSerializer,
-)
+from .serializers import (AuthSerializer, GetTokenSerializer,
+                          UserAdminSerializer, UserSerializer)
 
 User = get_user_model()
 
@@ -51,9 +47,7 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-@action(detail=False,
-        permission_classes=[AllowAny]
-        )
+@action(detail=False, permission_classes=[AllowAny])
 @api_view(["POST"])
 def token(request):
     serializer = GetTokenSerializer(data=request.data)
