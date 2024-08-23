@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
@@ -11,6 +10,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from api_yamdb.settings import ADMIN_EMAIL
 
+from custom_users.models import User
 from custom_users.permissions import IsAdmin
 from custom_users.serializers import (
     AuthSerializer,
@@ -18,8 +18,6 @@ from custom_users.serializers import (
     UserAdminSerializer,
     UserSerializer,
 )
-
-User = get_user_model()
 
 
 class UserViewSet(viewsets.ModelViewSet):

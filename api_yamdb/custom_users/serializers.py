@@ -5,6 +5,8 @@ from django.core.validators import MaxLengthValidator
 from django.db import IntegrityError
 from rest_framework import serializers
 
+from custom_users.constants import MAX_LENGTH_EMAIL
+
 
 def validate_username(value):
     if not isinstance(value, str):
@@ -25,7 +27,9 @@ class UserSerializer(serializers.ModelSerializer):
     username = serializers.RegexField(
         r"^[\w.@+-]{1,150}$",
     )
-    email = serializers.EmailField(validators=[MaxLengthValidator(254)])
+    email = serializers.EmailField(
+        validators=[MaxLengthValidator(MAX_LENGTH_EMAIL)]
+    )
 
     class Meta:
         model = CustomUser
