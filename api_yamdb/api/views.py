@@ -34,12 +34,6 @@ class GenreViewSet(CreateDestroyViewSet):
     lookup_field = "slug"
     permission_classes = (IsAdminOrAnyReadOnly,)
 
-    def destroy(self, request, slug=None):
-        genre = get_object_or_404(Genre, slug=slug)
-        self.check_object_permissions(request, genre)
-        genre.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
 
 class CategoryViewSet(CreateDestroyViewSet):
     queryset = Category.objects.all()
@@ -48,12 +42,6 @@ class CategoryViewSet(CreateDestroyViewSet):
     lookup_field = "slug"
     filter_backends = (filters.SearchFilter,)
     search_fields = ("name",)
-
-    def destroy(self, request, slug=None):
-        category = get_object_or_404(Category, slug=slug)
-        self.check_object_permissions(request, category)
-        category.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class TitleViewSet(viewsets.ModelViewSet):
@@ -74,13 +62,16 @@ class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
     http_method_names = ("get", "post", "patch", "delete", "head", "options")
 
+    def get_title_id(self):
+        return self.kwargs.get("title_id")
+
     def get_queryset(self):
         """Возвращает отзывы, относящиеся к конкретному произведению."""
-        title_id = self.kwargs.get("title_id")
+        title_id = self.get_title_id()
         return Review.objects.filter(title_id=title_id)
 
     def perform_create(self, serializer):
-        title_id = self.kwargs.get("title_id")
+        title_id = self.get_title_id()
         title = get_object_or_404(Title, pk=title_id)
         serializer.save(title=title, author=self.request.user)
 
