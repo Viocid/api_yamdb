@@ -2,6 +2,7 @@ from custom_users.constants import MAX_LENGHT_EMAIL, MAX_LENGHT_NAME
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
+from django.contrib.auth import get_user_model
 
 
 class CustomUser(AbstractUser):
@@ -37,3 +38,5 @@ class CustomUser(AbstractUser):
     @property
     def is_moderator(self):
         return self.role == self.MODERATOR
+
+User = get_user_model()

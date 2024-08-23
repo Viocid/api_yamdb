@@ -5,7 +5,7 @@ from django.core.validators import MaxLengthValidator
 from django.db import IntegrityError
 from rest_framework import serializers
 
-from custom_users.constants import MAX_LENGTH_EMAIL
+from custom_users.constants import MAX_LENGHT_EMAIL
 
 
 def validate_username(value):
@@ -28,7 +28,7 @@ class UserSerializer(serializers.ModelSerializer):
         r"^[\w.@+-]{1,150}$",
     )
     email = serializers.EmailField(
-        validators=[MaxLengthValidator(MAX_LENGTH_EMAIL)]
+        validators=[MaxLengthValidator(MAX_LENGHT_EMAIL)]
     )
 
     class Meta:
