@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import CheckConstraint, Q
 from django.utils import timezone
+from api.validators import validate_score
 
 from reviews.constants import (MAX_NAME_LENGTH,
                                MAX_SLUG_LENGTH,
@@ -96,9 +97,9 @@ class GenreToTitle(models.Model):
         return f"{self.title}, {self.genre}"
 
 
-def validate_score(value):
-    if value < 1 or value > 10:
-        raise ValidationError("Оценка должна быть от 1 до 10.")
+#def validate_score(value):
+    #if value < 1 or value > 10:
+    #    raise ValidationError("Оценка должна быть от 1 до 10.")
 
 
 class Review(models.Model):
