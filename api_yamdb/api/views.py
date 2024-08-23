@@ -4,6 +4,7 @@ from rest_framework import filters, mixins, status, viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from reviews.models import Category, Comment, Genre, Review, Title
+from django.db.models import Avg
 
 from api.permissions import IsAdminOrAnyReadOnly, IsAuthorOrReadOnly
 from api.serializers import (
@@ -45,7 +46,8 @@ class CategoryViewSet(CreateDestroyViewSet):
 
 
 class TitleViewSet(viewsets.ModelViewSet):
-    queryset = Title.objects.all()
+    queryset = Title.objects.annotate(
+        rating=Avg("reviews__score")).order_by('name')
     serializer_class = TitleCPDSerializer
     filter_backends = (DjangoFilterBackend,)
     http_method_names = ("get", "post", "patch", "delete", "head", "options")

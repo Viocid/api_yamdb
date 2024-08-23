@@ -22,7 +22,7 @@ class TitleLRSerializer(serializers.ModelSerializer):
 
     category = CategorySerializer(read_only=True)
     genre = GenreSerializer(read_only=True, many=True)
-    rating = serializers.SerializerMethodField()
+    rating = serializers.FloatField(read_only=True)
 
     class Meta:
         model = Title
@@ -35,11 +35,6 @@ class TitleLRSerializer(serializers.ModelSerializer):
             "category",
             "rating",
         )
-
-    def get_rating(self, title):
-        """Подсчет среднего рейтинга для произведения."""
-        avg_score = title.reviews.aggregate(Avg("score")).get("score__avg")
-        return avg_score or None
 
 
 class TitleCPDSerializer(serializers.ModelSerializer):
@@ -94,26 +89,3 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ("id", "text", "author", "pub_date")
         read_only_fields = ("author",)
-
-
-class TitleSerializer(serializers.ModelSerializer):
-    """Сериализатор для модели Title с расчетом рейтинга."""
-
-    rating = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Title
-        fields = (
-            "id",
-            "name",
-            "year",
-            "description",
-            "genre",
-            "category",
-            "rating",
-        )
-
-    def get_rating(self, title):
-        """Подсчет среднего рейтинга для произведения."""
-        avg_score = title.reviews.aggregate(Avg("score")).get("score__avg")
-        return avg_score or 0
