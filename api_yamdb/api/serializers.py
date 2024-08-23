@@ -1,9 +1,6 @@
 from django.db.models import Avg
-from django.utils import timezone
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
 from reviews.models import Category, Comment, Genre, Review, Title
-from api.validators import validate_year
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -43,11 +40,6 @@ class TitleLRSerializer(serializers.ModelSerializer):
         """Подсчет среднего рейтинга для произведения."""
         avg_score = title.reviews.aggregate(Avg("score")).get("score__avg")
         return avg_score or None
-
-    def validate_year(self, value):
-        validate_year(value)
-        #if value > timezone.now().year:
-        #    raise ValidationError("Год указан неверно.")
 
 
 class TitleCPDSerializer(serializers.ModelSerializer):
