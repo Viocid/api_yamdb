@@ -2,12 +2,9 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models import CheckConstraint, Q
 from django.utils import timezone
-from api.validators import validate_score, validate_year
 
-from reviews.constants import (MAX_NAME_LENGTH,
-                               MAX_SLUG_LENGTH,
-                               REVIEW_TEXT_CUT
-                               )
+from reviews.constants import MAX_NAME_LENGTH, MAX_SLUG_LENGTH, REVIEW_TEXT_CUT
+from reviews.validators import validate_score, validate_year
 
 User = get_user_model()
 
@@ -50,10 +47,7 @@ class Title(models.Model):
     """Произведения."""
 
     name = models.CharField("Произведение", max_length=MAX_NAME_LENGTH)
-    year = models.SmallIntegerField(
-        "Год выпуска",
-        validators=[validate_year]
-    )
+    year = models.SmallIntegerField("Год выпуска", validators=[validate_year])
     description = models.TextField("Описание", blank=True)
     category = models.ForeignKey(
         Category,
@@ -105,8 +99,7 @@ class Review(models.Model):
         User, on_delete=models.CASCADE, related_name="reviews"
     )
     score = models.PositiveSmallIntegerField(
-        "Оценка",
-        validators=[validate_score]
+        "Оценка", validators=[validate_score]
     )
     title = models.ForeignKey(
         Title, on_delete=models.CASCADE, related_name="reviews"

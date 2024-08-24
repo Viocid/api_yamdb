@@ -1,19 +1,11 @@
-from custom_users.models import CustomUser
-from django.contrib.auth.validators import UnicodeUsernameValidator
-from django.core.exceptions import ValidationError
 from django.core.validators import MaxLengthValidator
+from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import IntegrityError
 from rest_framework import serializers
 
-from custom_users.constants import MAX_LENGHT_EMAIL
-
-
-def validate_username(value):
-    if not isinstance(value, str):
-        raise ValidationError("username должен иметь тип str")
-    if value.lower() == "me":
-        raise ValidationError(f'username не может быть "{value}"')
-    return value
+from custom_users.constants import MAX_LENGTH_EMAIL
+from custom_users.models import CustomUser
+from custom_users.validators import validate_username
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -28,7 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
         r"^[\w.@+-]{1,150}$",
     )
     email = serializers.EmailField(
-        validators=[MaxLengthValidator(MAX_LENGHT_EMAIL)]
+        validators=[MaxLengthValidator(MAX_LENGTH_EMAIL)]
     )
 
     class Meta:

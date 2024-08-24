@@ -1,11 +1,11 @@
-from django.shortcuts import get_object_or_404
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, mixins, status, viewsets
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.response import Response
-from reviews.models import Category, Comment, Genre, Review, Title
 from django.db.models import Avg
+from django.shortcuts import get_object_or_404
 
+from rest_framework import filters, mixins, viewsets
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from django_filters.rest_framework import DjangoFilterBackend
+
+from api.filters import TitlesFilter
 from api.permissions import IsAdminOrAnyReadOnly, IsAuthorOrReadOnly
 from api.serializers import (
     CategorySerializer,
@@ -15,7 +15,8 @@ from api.serializers import (
     TitleCPDSerializer,
     TitleLRSerializer,
 )
-from api.filters import TitlesFilter
+
+from reviews.models import Category, Comment, Genre, Review, Title
 
 
 class CreateDestroyViewSet(
@@ -46,8 +47,9 @@ class CategoryViewSet(CreateDestroyViewSet):
 
 
 class TitleViewSet(viewsets.ModelViewSet):
-    queryset = Title.objects.annotate(
-        rating=Avg("reviews__score")).order_by('name')
+    queryset = Title.objects.annotate(rating=Avg("reviews__score")).order_by(
+        "name"
+    )
     serializer_class = TitleCPDSerializer
     filter_backends = (DjangoFilterBackend,)
     http_method_names = ("get", "post", "patch", "delete", "head", "options")

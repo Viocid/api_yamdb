@@ -1,14 +1,12 @@
-from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.tokens import default_token_generator
 from rest_framework import filters, status, views, viewsets
 from rest_framework.decorators import action, api_view
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
 from rest_framework_simplejwt.tokens import RefreshToken
-
-from api_yamdb.settings import ADMIN_EMAIL
 
 from custom_users.models import User
 from custom_users.permissions import IsAdmin
@@ -18,6 +16,7 @@ from custom_users.serializers import (
     UserAdminSerializer,
     UserSerializer,
 )
+from api_yamdb.settings import ADMIN_EMAIL
 
 
 class UserViewSet(viewsets.ModelViewSet):
