@@ -79,5 +79,7 @@ class SignUpView(views.APIView):
                 ADMIN_EMAIL,
                 [request.data.get("email")],
             )
+            user.confirmation_code = confirmation_code
+            user.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
