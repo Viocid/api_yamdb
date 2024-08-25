@@ -3,7 +3,12 @@ from django.db import models
 from django.db.models import CheckConstraint, Q
 from django.utils import timezone
 
-from reviews.constants import MAX_NAME_LENGTH, MAX_SLUG_LENGTH, REVIEW_TEXT_CUT
+from reviews.constants import (
+    MAX_NAME_LENGTH,
+    MAX_SLUG_LENGTH,
+    REVIEW_TEXT_CUT,
+    COMMENT_TEXT_CUT,
+)
 from reviews.validators import validate_score, validate_year
 
 User = get_user_model()
@@ -129,7 +134,7 @@ class Comment(models.Model):
     )
 
     def __str__(self):
-        return self.text[:20]
+        return self.text[:COMMENT_TEXT_CUT]
 
     class Meta:
         ordering = ("pub_date",)

@@ -94,17 +94,22 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     http_method_names = ("get", "post", "patch", "delete", "head", "options")
 
+    def get_review_id(self):
+        return self.kwargs.get("review_id")
+
+    def get_title_id(self):
+        return self.kwargs.get("title_id")
+
     def get_queryset(self):
         """Возвращает комментарии, относящиеся к конкретному отзыву."""
-        review_id = self.kwargs.get("review_id")
-        return Comment.objects.filter(review_id=review_id)
+        return Comment.objects.filter(review_id=self.get_review_id())
 
     def perform_create(self, serializer):
         """Присваиваем авторство и связанный отзыв при создании комментария."""
-        review_id = self.kwargs.get("review_id")
-        title_id = self.kwargs.get("title_id")
-        title = get_object_or_404(Title, pk=title_id)
-        review = get_object_or_404(Review, pk=review_id, title_id=title)
+        title = get_object_or_404(Title, pk=self.get_title_id())
+        review = get_object_or_404(
+            Review, pk=self.get_review_id(), title_id=title
+        )
         serializer.save(review=review, author=self.request.user)
 
     def get_permissions(self):

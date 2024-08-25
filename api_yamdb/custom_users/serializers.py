@@ -3,7 +3,7 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import IntegrityError
 from rest_framework import serializers
 
-from custom_users.constants import MAX_LENGTH_EMAIL
+from custom_users.constants import MAX_LENGTH_EMAIL, MAX_LENGTH_NAME
 from custom_users.models import CustomUser
 from custom_users.validators import validate_username
 
@@ -17,7 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     role = serializers.StringRelatedField(read_only=True)
     username = serializers.RegexField(
-        r"^[\w.@+-]{1,150}$",
+        r"^[\w.@+-]{1,MAX_LENGTH_NAME}$",
     )
     email = serializers.EmailField(
         validators=[MaxLengthValidator(MAX_LENGTH_EMAIL)]
@@ -74,10 +74,10 @@ class GetTokenSerializer(serializers.Serializer):
 
 
 class AuthSerializer(serializers.Serializer):
-    email = serializers.EmailField(required=True, max_length=254)
+    email = serializers.EmailField(required=True, max_length=MAX_LENGTH_EMAIL)
     username = serializers.CharField(
         required=True,
-        max_length=150,
+        max_length=MAX_LENGTH_NAME,
         validators=(validate_username, UnicodeUsernameValidator()),
     )
 
